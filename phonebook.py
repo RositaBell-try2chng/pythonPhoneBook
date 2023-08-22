@@ -22,11 +22,13 @@ class PhoneBook:
             print('EXCEPTION:\nsomething wrong with file')
             exit()
             
-
-    def printShort(self):
-        for one in PhoneBook.phb:
-            print(one, end = ' ')
-            PhoneBook.phb[one].printContact()
+    @staticmethod
+    def printShort(pageNo: int):
+        offset: int = (pageNo - 1) * 9
+        for i in range(9):
+            if (PhoneBook.phb.get(i + offset) is not None):
+                print(i + offset, end = ' ')
+                PhoneBook.phb[i + offset].printContact()
 
     def addNewContact(self):
         tmp: Contact = Contact()
@@ -78,4 +80,58 @@ class PhoneBook:
                 json.dump(toDump, file)
         except:
             self.restoreFromBackup()
+
+    @staticmethod
+    def showMenuHints(currentPage: int, pgs: float):
+        if (currentPage < pgs):
+            print('Enter /Next to show next Page')
+        if (currentPage > 1):
+            print('Enter /Previous to show previous Page')
+        print('Enter /Inspect <id>, to inspect concrete contact')
+        print('Enter /Back to return to main menu')
+
+    @staticmethod
+    def showMenu() -> None:
+        if (len(PhoneBook.phb) == 0):
+            print('Have no contacts, return to main menu')
+            return
+        currentPage: int = 1
+        pgs: float = ((PhoneBook.nextId - 1) / 2)
+        print(f'Page {currentPage}:')
+        PhoneBook.printShort(currentPage)
+        while True:
+            PhoneBook.showMenuHints(currentPage, pgs)
+            showCommand: str = input()
+            match showCommand:
+                case '/Back':
+                    print('Return to main menu\n')
+                    return
+                case '/Next':
+                    if (currentPage >= pgs):
+                        print('ERROR: wrong command\n')
+                    else:
+                        currentPage += 1
+                        PhoneBook.printShort(currentPage)
+                        print()
+                case '/Previous':
+                    if (currentPage <= 1):
+                        print('ERROR: wrong command\n')
+                    else:
+                        currentPage -= 1
+                        PhoneBook.printShort(currentPage)
+                        print()
+                case '':
+                    print('ERROR: no command\n')
+                case _:
+                    cmdSplit: list = showCommand.split(' ')
+                    if (cmdSplit[0] == '/Inspect' and len(cmdSplit) == 2 and cmdSplit[1].isdigit()):
+                        id: int = int(cmdSplit[1])
+                        if (PhoneBook.phb.get(id) is not None):
+                            print(f'Contact with id = {id}:')
+                            PhoneBook.phb[id].inspectContact()
+                            print()
+                        else:
+                            print(f'Not found contact with id = {id}\n')
+                    else:
+                        print('ERROR: wrong command\n')
 

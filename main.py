@@ -19,7 +19,7 @@ def mainLoop(phb: PhoneBook):
             case '/Help':
                 print(main_instructions)
             case '/Show':
-                phb.printShort() #show  page by page
+                phb.showMenu()
             case '/Add':
                 if not os.access('phonebook.json', os.W_OK):
                     print('Error: file have no access to write')
