@@ -1,11 +1,13 @@
 class Contact:
     def __init__(self):
-        self.__firstName: str = None
-        # lastName = None
-        # middleName = None
-        # organizationName = None
-        # workPhone = None
-        # personalPhone = None
+        self.__attr: dict = {
+            "first_name": None,
+            "last_name": None,
+            "middle_name": None,
+            "organization_name": None,
+            "work_phone": None,
+            "personal_phone": None
+        }
 
     @staticmethod
     def getReadyString(dst: str) -> str:
@@ -25,50 +27,26 @@ class Contact:
 
 
     def printContact(self):
-        toPrint = "|"
-        toPrint += self.getReadyString(self.__firstName) + "|"
+        toPrint: str = "|"
+        for at in self.__attr:
+            toPrint += self.getReadyString(self.getAttr(at)) + "|"
         print(toPrint)
 
     def inspectContact(self):
-        print(f'First name: {self.__firstName}')
+        for at in self.__attr:
+            print(at + ':', self.__attr.get(at))
 
     def fillFields(self, attr: list):
         self.setFirstName(attr[0])
 
-    # setters
-    def setFirstName(self, firstName):
-        self.__firstName = firstName
-
-    # def setLastName(self, lastName):
-    #     self.lastName = lastName
-
-    # def setMiddleName(self, middle):
-    #     self.middle = middle
-
-    # def setOrgName(self, organizationName):
-    #     self.organizationName = organizationName
-
-    # def setWorkPhone(self, workPhone):
-    #     self.workPhone = workPhone
-
-    # def setPersonalPhone(self, personalPhone):
-    #     self.personalPhone = personalPhone
+    def setAttr(self, which: str, value: str):
+        if value is not None and len(value) == 0:
+            value = None
+        self.__attr[which] = value
 
     #getters
-    def getFirstName(self) -> str:
-        return self.__firstName
+    def getAttr(self, which: str):
+        return self.__attr.get(which)
 
-    # def getLastName(self, lastName) -> str:
-    #     self.lastName = lastName
-
-    # def getMiddleName(self, middle) -> str:
-    #     self.middle = middle
-
-    # def getOrgName(self, organizationName) -> str:
-    #     self.organizationName = organizationName
-
-    # def getWorkPhone(self, workPhone) -> str:
-    #     self.workPhone = workPhone
-
-    # def getPersonalPhone(self, personalPhone) -> str:
-    #     self.personalPhone = personalPhone
+    def getAttrs(self):
+        return self.__attr

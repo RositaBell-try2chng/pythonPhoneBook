@@ -2,50 +2,56 @@ import os
 from contact import Contact
 from phonebook import PhoneBook
 
-
 main_instructions: str = """commands:
-/Help - show hints
-/Show - show contacts page by page
-/Add - add new contact
-/Edit - edit contact
-/Search - looking for contact
-/Exit - exit from program
+        /Help - show hints
+        /Show - show contacts page by page
+        /Add - add new contact
+        /Edit - edit contact chose from 
+        /Search - looking for contact
+        /Save - to save changes to file
+        /Exit - exit from program
 """
 
-def mainLoop(phb: PhoneBook):
+def mainLoop():
     while True:
-        cmd = input('Enter the command:\n')
+        print(main_instructions)
+        cmd: str = input('Enter the command:\n')
         match cmd:
             case '/Help':
-                print(main_instructions)
+                continue
             case '/Show':
-                phb.showMenu()
+                PhoneBook.showMenu()
             case '/Add':
                 if not os.access('phonebook.json', os.W_OK):
                     print('Error: file have no access to write')
                 else:
-                    phb.addNewContact()
+                    PhoneBook.addNewContact()
             case '/Edit':
                 if not os.access('phonebook.json', os.W_OK):
                     print('Error: file have no access to write')
                 else:
-                    None #edit contact
+                    PhoneBook.editContact()
+            case '/Save':
+                PhoneBook.writeToFile()
             case '/Search':
-                None #Search
+                PhoneBook.searchContact()
             case '/Exit':
-                exit()
+                PhoneBook.safeExit()
             case _:
-                print('unknow command. To help use /Help')
+                sepCmd: list = cmd.split(' ')
+                if (len(sepCmd) == 2 and sepCmd[0] == '/Edit' and sepCmd[1].isdigit):
+                    PhoneBook.editContact(int(sepCmd[1]))
+                print('unknow command.')
+
 def main():
     if not os.access('phonebook.json', os.F_OK):
-        file = open('phonebook.json', 'w+')
+        file: file = open('phonebook.json', 'w+')
         file.write([])
         file.close
     elif not os.access('phonebook.json', os.R_OK):
         print('Error: file have no access to read')
-    phb: PhoneBook = PhoneBook()
-    print(main_instructions)
-    mainLoop(phb)
+    PhoneBook.getFromFile()
+    mainLoop()
 
 if __name__ == "__main__":
     main()

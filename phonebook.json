@@ -1,10 +1,1 @@
-[
-    {
-        "id":1,
-        "first_name":"Andreev"
-    },
-    {
-        "id":2,
-        "first_name":"Ruslan"
-    }
-]
+[{"id": 1, "first_name": "Andreev", "last_name": "Rusln", "middle_name": null, "organization_name": null, "work_phone": null, "personal_phone": null}, {"id": 2, "first_name": "Heckfu", "last_name": "NewLast", "middle_name": null, "organization_name": null, "work_phone": null, "personal_phone": null}, {"id": 3, "first_name": "Viktoriia12", "last_name": "ASD", "middle_name": "DSA", "organization_name": "a", "work_phone": "a", "personal_phone": "2"}, {"id": 4, "first_name": "Andy", "last_name": "Andreev", "middle_name": "123", "organization_name": "321", "work_phone": "1", "personal_phone": "qweerty"}, {"id": 5, "first_name": "Victor", "last_name": "Semyakin", "middle_name": null, "organization_name": "421", "work_phone": "1", "personal_phone": "wee"}, {"id": 6, "first_name": "Manya", "last_name": "Sonyakina", "middle_name": "Sa", "organization_name": "tinkoff", "work_phone": "444", "personal_phone": "124"}, {"id": 7, "first_name": "1234", "last_name": "321", "middle_name": "123", "organization_name": "123", "work_phone": "123", "personal_phone": "123"}, {"id": 8, "first_name": null, "last_name": "Trouble", "middle_name": null, "organization_name": "412", "work_phone": null, "personal_phone": null}, {"id": 9, "first_name": null, "last_name": null, "middle_name": null, "organization_name": "some org", "work_phone": "555", "personal_phone": "123"}, {"id": 10, "first_name": "123321", "last_name": "123321", "middle_name": "123321", "organization_name": "123123", "work_phone": "123123", "personal_phone": "123123"}, {"id": 11, "first_name": "678678", "last_name": "678678", "middle_name": "678678", "organization_name": "678678", "work_phone": "678678", "personal_phone": "678678"}, {"id": 12, "first_name": "nexttime", "last_name": "123", "middle_name": null, "organization_name": null, "work_phone": null, "personal_phone": null}, {"id": 13, "first_name": "qwerty", "last_name": "qwety", "middle_name": null, "organization_name": null, "work_phone": null, "personal_phone": null}]
