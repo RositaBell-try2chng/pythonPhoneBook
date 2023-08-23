@@ -9,6 +9,7 @@ class PhoneBook:
 
     @staticmethod
     def getFromFile():
+        """Get all data from file in phb"""
         try:
             with open('phonebook.json', 'r') as file:
                 contactsList: list = json.load(file)
@@ -26,6 +27,7 @@ class PhoneBook:
             
     @staticmethod
     def countIdLen(pageNo: int) -> int:
+        """Count len of id coloumn for table depends on pageNo"""
         maxIdOnPage: int = pageNo * 9
         res: int = 1
         while maxIdOnPage >= 10:
@@ -35,6 +37,7 @@ class PhoneBook:
 
     @staticmethod
     def printHat(pageNo: int):
+        """Print hat of table for show contacts in short form"""
         idLen: int = PhoneBook.countIdLen(pageNo)
         if idLen < 2:
             idLen = 2
@@ -49,6 +52,7 @@ class PhoneBook:
         
     @staticmethod
     def printShort(pageNo: int):
+        """Print all contacts on a page in short form as a table"""
         offset: int = (pageNo - 1) * 9
         PhoneBook.printHat(pageNo)        
         for i in range(9):
@@ -62,6 +66,7 @@ class PhoneBook:
 
     @staticmethod
     def addNewContact():
+        """Add new contact in phb and write changes in a file"""
         tmp: Contact = Contact()
         id: int = PhoneBook.nextId
         attrs: dict = tmp.getAttrs()
@@ -74,6 +79,7 @@ class PhoneBook:
 
     @staticmethod
     def makeBackup() -> int:
+        """Make backup of file before write in it"""
         try:
             src: file = open('phonebook.json', 'r')
             dst: file = open('phonebook_backup.json', 'w+')
@@ -84,6 +90,7 @@ class PhoneBook:
 
     @staticmethod
     def restoreFromBackup():
+        """Restore data from backup if something wrong while writing in the file"""
         try:
             dst: file = open('phonebook.json', 'w+')
             src: file = open('phonebook_backup.json', 'r')
@@ -94,12 +101,14 @@ class PhoneBook:
         
     @staticmethod
     def getJsonToInsert(one: int) -> json:
+        """Make json object to insert in the file"""
         res: json = {"id": one}
         res.update(PhoneBook.phb.get(one).getAttrs())
         return res
 
     @staticmethod
     def writeToFile():
+        """Write phb in the file"""
         if PhoneBook.makeBackup() == 1:
             try:
                 toDump: list = []
@@ -117,6 +126,7 @@ class PhoneBook:
             print('ERROR: cannot make backup, so we dont save changes in file.')
     
     def inspectMenuHints():
+        """Print hints for inspect Menu"""
         hints: str = """Inspect Menu Commands:
         /Back - return to Show menu
         /Exit - Exit from program
@@ -127,6 +137,7 @@ class PhoneBook:
 
     @staticmethod
     def inspectMenu(id: int):
+        """Print full data of one Contact and make you able to do something with it"""
         print(f'Now you are in /Inspect menu!')
         print(f'Contact with id = {id}:')
         PhoneBook.phb[id].inspectContact()
@@ -153,6 +164,7 @@ class PhoneBook:
 
     @staticmethod
     def showMenuHints(currentPage: int, pgs: float):
+        """Print hints for show Menu"""
         hints: str = 'show menu commands:\n'
         if (currentPage < pgs):
             hints += '        /Next - to show next Page\n'
@@ -168,6 +180,19 @@ class PhoneBook:
 
     @staticmethod
     def showMenu() -> None:
+        """Show menu
+        
+        No arguments
+        No return value
+        
+        Print all contacts page by page(only 8 contacts on a page) in the short form as a table
+        If there are no contacts in the phonebook return you to main menu
+        Print first page
+        Infinitly print hints and ask to input command
+        If thire is next page you can input /Next to show next page and /Previous - for previous page
+        You can read about all commands in hints
+
+        """
         print('Now you are in /Show menu!')
         if (len(PhoneBook.phb) == 0):
             print('Have no contacts, return to main menu')
@@ -230,8 +255,19 @@ class PhoneBook:
 
     @staticmethod
     def editContact(id: int = 0):
+        """Edit contact
+        
+        Arguments:
+            id: int -> id of Contact which we want to change
+        No returned value
+
+        If id == 0, make you able to choose contact
+        If contact with <id> is not exists -> print error and return to previous stage
+        Give you menu for change contact
+        
+        """
         if id == 0:
-            print("You should chose contact in /Show -> /Inspect <id> -> /Edit to edit contact")
+            print("You should choose contact in /Show -> /Inspect <id> -> /Edit to edit contact")
             PhoneBook.showMenu()
             return
         cont: Contact = PhoneBook.phb.get(id)
@@ -261,6 +297,20 @@ class PhoneBook:
     
     @staticmethod
     def checkEqual(who: Contact, tmp: Contact) -> bool:
+        """Compare two contacts
+        
+        Arguments:
+            who -> contact from phonebook to compare
+            tmp -> template of contact
+        Returned:
+            bool -> if who is enough same as tmp
+
+        If some attribute of 'tmp' is 'None' we exclude it
+        If some attribute of 'tmp' is 'NOT None' we check if it in same attribute of 'who'
+        If 'who' contact pass all tests -> return True
+        If atleast one test was failed -> return False
+        
+        """
         for at in tmp.getAttrs():
             atTmp: str = tmp.getAttr(at)
             atWho: str = who.getAttr(at)
@@ -270,6 +320,7 @@ class PhoneBook:
 
     @staticmethod
     def getAllBy(tmp: Contact) -> dict:
+        """Find all contacts which is enough same as 'tmp'"""
         res: dict = {}
         for one in PhoneBook.phb:
             if (PhoneBook.checkEqual(PhoneBook.phb.get(one), tmp)):
@@ -278,6 +329,13 @@ class PhoneBook:
 
     @staticmethod
     def searchContact():
+        """Search menu
+        
+        No arguments
+        No returned value
+
+        Make you able to set attributes which you want to use for search
+        """
         flg: bool = False
         res: dict = {}
         tmpCont: Contact = Contact()
@@ -306,6 +364,7 @@ class PhoneBook:
     
     @staticmethod
     def safeExit():
+        """If you have unsaved changes -> ask you about it before exit. Else -> just exit"""
         if not PhoneBook.flgChng:
             exit()
         res: str = input('Do you want to save changes?\n\t\tNO - disagree\n\t\tWhatever else - agree\n')

@@ -13,6 +13,13 @@ main_instructions: str = """commands:
 """
 
 def mainLoop():
+    """main loop
+
+    No arguments
+    No returned value
+    Infinitly print hints, how you can work with it. And ask to input command
+
+    """
     while True:
         print(main_instructions)
         cmd: str = input('Enter the command:\n')
@@ -44,12 +51,24 @@ def mainLoop():
                 print('unknow command.')
 
 def main():
+    """main function.
+    
+    No arguments
+    No returned value
+    
+    Check exists file, if not -> create it
+    Check rights on read of file, if not -> print error + exit
+    Get all data from file
+    Launch main loop
+    
+    """
     if not os.access('phonebook.json', os.F_OK):
         file: file = open('phonebook.json', 'w+')
         file.write([])
         file.close
     elif not os.access('phonebook.json', os.R_OK):
         print('Error: file have no access to read')
+        exit()
     PhoneBook.getFromFile()
     mainLoop()
 
